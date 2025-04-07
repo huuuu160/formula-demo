@@ -1,0 +1,46 @@
+.impact-tag {
+  position: relative;
+  cursor: pointer;
+  min-height: 32px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  &.editing {
+    border-color: transparent;
+    background: #e6f7ff;
+    box-shadow: 0 0 8px rgba(24, 144, 255, 0.2);
+
+    .floating-indicator {
+      position: absolute;
+      top: -12px;
+      right: -8px;
+      background: #1890ff;
+      border-radius: 10px;
+      padding: 2px 8px;
+      display: flex;
+      align-items: center;
+
+      .tip-text {
+        color: white;
+        font-size: 12px;
+        margin-left: 4px;
+      }
+
+      .dot-pulse {
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        animation: dotPulse 1.2s infinite;
+      }
+    }
+  }
+}
+
+@keyframes dotPulse {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.5; }
+}
