@@ -170,7 +170,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ visible, onOk, onCancel
 
   // 修改后的新增公式处理
   const handleAddFormula = () => {
-    const maxTerm3 = secondTableData.reduce((max, item) => Math.max(max, item.term3), 0);
+    const maxTerm3 = secondTableData.reduce((max, item) => Math.max(max, item.term3), -1);
     const newRow = {
       term1: '', // 默认值
       term2: '',
@@ -432,7 +432,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ visible, onOk, onCancel
       // 步骤2：生成顺序映射表（旧顺序 → 新顺序）
       const orderMapping = new Map<number, number>();
       prevSecond.forEach((originalItem, originalIndex) => {
-        const newOrder = newSecondTable.findIndex(item => item.term4 === originalItem.term4) + 1;
+        const newOrder = newSecondTable.findIndex(item => item.term4 === originalItem.term4);
         orderMapping.set(originalItem.term3, newOrder);
       });
 
@@ -457,7 +457,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ visible, onOk, onCancel
       // 步骤4：返回更新后的第二个表格数据
       return newSecondTable.map((item, index) => ({
         ...item,
-        term3: index + 1
+        term3: index
       }));
     });
   }
@@ -517,7 +517,10 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ visible, onOk, onCancel
         });
 
   // 解析当前影响标签值
-  const currentValues = record.term3.split(',').map(Number).filter(Boolean);
+  const currentValues = record.term3
+    .split(',') // 根据逗号拆分字符串
+    .map((item: string) => parseInt(item.trim(), 10)) // 确保每个项都被转为数字
+    .filter((n: number) => !isNaN(n)); // 过滤掉无效的数字
 
   // 查找匹配的公式行
   const matchedKeys = secondTableData
@@ -525,6 +528,7 @@ const ModalComponent: React.FC<ModalComponentProps> = ({ visible, onOk, onCancel
     .map(item => item.term4);
 
   setSelectedFormulaKeys(matchedKeys);
+  console.log(matchedKeys)
 };
   const handleExitEdit = () => {
   setEditingImpactTag(null);
@@ -605,7 +609,7 @@ const handleDeleteFormulas = () => {
     // 2. 创建旧term3到新term3的映射表（基于数组索引）
     const term3Mapping = new Map<number, number>();
     remainingFormulas.forEach((_, index) => {
-      term3Mapping.set(remainingFormulas[index].term3, index + 1);
+      term3Mapping.set(remainingFormulas[index].term3, index );
     });
 
     // 3. 更新条件表中的影响标签
@@ -627,7 +631,7 @@ const handleDeleteFormulas = () => {
     // 4. 生成新的连续term3编号
     return remainingFormulas.map((item, index) => ({
       ...item,
-      term3: index + 1, // 从1开始连续编号
+      term3: index , // 从1开始连续编号
     }));
   });
 
