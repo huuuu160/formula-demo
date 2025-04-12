@@ -14,13 +14,14 @@ const App: React.FC = () => {
     setIsModalVisible(false); // 点击“确定”关闭模态框
   };
 
+
   const handleModalCancel = () => {
     setIsModalVisible(false); // 点击“取消”关闭模态框
   };
 
   return (
     <div>
-      <h1>这是按钮</h1>
+      <h1>这是按钮1</h1>
       <ButtonComponent onClick={handleButtonClick} />
       <ModalComponent
         visible={isModalVisible}
